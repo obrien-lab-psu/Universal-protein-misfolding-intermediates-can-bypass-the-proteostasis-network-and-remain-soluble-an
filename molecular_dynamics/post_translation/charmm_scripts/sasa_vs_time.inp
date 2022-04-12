@@ -1,0 +1,49 @@
+*FILENAME: rmsd-rgyr.inp
+*PURPOSE: compute rmsd vs initial structure and radius of gyration from trajectory
+*AUTHOR: Lennart Nilsson, Karolinska Institutet, October 2003
+*
+
+prnlev 3
+bomblev -1
+
+read rtf card name singledom/1k7j/inpfiles/1k7j_rnc_complex.top
+read para card name singledom/1k7j/inpfiles/1k7j_rnc_complex.prm
+read psf card name singledom/1k7j/inpfiles/1k7j_chain_a_mod_ca.psf
+
+!open unit 12 write form name @outfile
+open unit 12 write unform name @outfile
+open unit 51 read unform name @infile
+
+traj firstu 51 nunit 1
+
+set inx = 1
+
+! COOR SURF ACCE ACCU 0 RPROBE 1.8 SELE segid RIBO end
+! SCALAR WMAIN AVER BYRES
+
+! loop to go through frame by frame and calculate the requested bead 
+! coordinates to be used in the calculation of the energy transfer rate
+
+label nextframe
+
+   traj read
+   coor copy comp
+   !write coor comp dumb sele ((resid 1 .and. type A) .or. (resid @trp .and. type A)) end unit 12
+   
+   write COOR SURF ACCE ACCU 0 RPROBE 1.8 SELE resid 1 .or.  resid 4 .or.  resid 5 .or.  resid 7 .or.  resid 16 .or.  resid 17 .or.  resid 20 .or. - 
+   resid 21 .or.  resid 23 .or.  resid 24 .or.  resid 29 .or.  resid 30 .or.  resid 31 .or.  resid 39  - 
+   .or.  resid 40 .or.  resid 42 .or.  resid 44 .or.  resid 49 .or.  resid 50 .or.  resid 53 .or.  resid 54 .or. - 
+   resid 56 .or.  resid 59 .or.  resid 65 .or.  resid 67 .or.  resid 68 .or.  resid 69 .or.  resid 72 .or.  resid 75 - 
+   .or.  resid 80 .or.  resid 81 .or.  resid 84 .or.  resid 85 .or.  resid 86 .or.  resid 88 .or.  resid 89 .or.  -
+   resid 99 .or.  resid 100 .or.  resid 101 .or.  resid 107 .or.  resid 111 .or.  resid 112 .or. resid 119 .or.  -
+   resid 121 .or.  resid 123 .or.  resid 128 .or.  resid 129 .or.  resid 131 .or.  resid 132 .or.  resid 133 .or.  resid 135 .or. -
+   resid 136 .or. resid 140 .or.  resid 141 .or.  resid 145 .or.  resid 146 .or.  resid 147 .or.  resid 152 .or.  -
+   resid 160 .or.  resid 164 .or.  resid 168 .or.  resid 170 .or. resid 171 .or.  resid 172 .or.  resid 177 .or.  -
+   resid 184 .or.  resid 185 .or.  resid 187 .or.  resid 193 .or.  resid 194 .or.  resid 195 .or.  resid 199 .or. -
+   resid 202 .or.  resid 205 .or.  resid 206 end unit 12
+
+   increment inx by 1
+
+if inx .le. @frames goto nextframe
+
+STOP

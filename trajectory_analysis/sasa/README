@@ -1,0 +1,78 @@
+This directory contains the CHARMM and Python2 programs necessary to 
+compute the residue-by-residue solvent accessible surface area of an
+input trajectory and then compute various metrics using these values. 
+
+The residue-by-residue SASA itself is computed by CHARMM. A sample DCD trajectory
+file is included in post_trans/multidom/1cli/output/1_i71_post_trans_2.dcd
+
+To compute the SASA of each residue in each frame of this DCD file, run the command
+
+> $charmm < charmm_scripts/sasa.inp top=post_trans/multidom/1cli/inpfiles/1cli_chain_a_rebuilt_mini_ca.top \
+  param=post_trans/multidom/1cli/inpfiles/1cli.prm psf=post_trans/multidom/1cli/inpfiles/1cli_chain_a_rebuilt_mini_ca.psf \
+  inpath=post_trans/multidom/1cli/output/1_i71_post_trans_1cli_2.dcd outpath=analysis/1cli/asa/1_i71_post_trans_1cli_2_sasa.txt \
+  nres=345 nsteps=10000000
+
+where you must replace $charmm with the path to your CHARMM executable.
+
+The output will be written to analysis/1cli/asa/1_i71_post_trans_1cli_2_sasa.txt
+
+Sample output is available in analysis/1cli.bck/asa
+
+Once the raw SASA values have been computed, the Python program python_scripts/traj_sasa_master.py
+uses Eqs. 10, 11, or 12 to compute a relative metric that compares the SASA of sets of amino acids
+to their average values within native state simulations. The native-state reference values needed
+to compute these equations, which consider the SASA of hydrophobic, aggregation-prone, and DnaK-binding
+residues, respectively, are stored in the files xstal_hydrophobic_sasa.dat, xstal_agg_sasa.dat, and
+xstal_DnaK_sasa.dat.
+
+To compute the SASA of hydrophobic residues within the protein run the command
+
+> python python_scripts/traj_sasa_master.py cntrl_files/1cli_analysis.cntrl 1 hydrophobic False
+
+The output time series will be written to analysis/1cli/1_hydrophpbic_sasa.txt
+The residues Ile, Val, Leu, Phe, Cys, Met, Ala, Gly, and Trp are considered hydrophobic
+for the purposes of this analysis. Sample output is available in analysis/1cli.bck/1_hydrophobic_sasa.txt
+
+To compute the SASA of aggregation-prone residues within 1CLI run the command
+
+> python python_scripts/traj_sasa_master.py cntrl_files/1cli_analysis.cntrl 1 Agg False
+
+Aggregation prone residues per protein are listed in aggregation/AMYLPRED2.dat, and the FASTA
+sequences used to querry the AMYPRED2 webserver are saved in aggregation/FASTA_sequences.dat
+Sample output is available in analysis/1cli.bck/1_agg_sasa.txt
+
+To compute the SASA of predicted DnaK binding sites (from LIMBO) run the command
+
+> python python_scripts/traj_sasa_master.py cntrl_files/1cli_analysis.cntrl 1 DnaK False
+
+The predicted DnaK interaction sites for each protein are listed in chaperones/DnaK/Limbo_output_parsed.txt
+while the FASTA sequences used to querry the webserver are available in chaperones/DnaK/FASTA_sequences.dat
+Sample output is available in analysis/1cli.bck/1_DnaK_sasa.txt
+
+Inspect the comments and notes within traj_sasa_master.py for additional information.
+
+While the above analyses use the post-translational trajectory data files, the co-translational
+SASA (Eq. 9) is computed over co-translational DCD files from synthesis trajectories. 
+
+A sample ribosome nascent chain complex DCD file is provided in cont_syn/multidom/1cli/output/1_r100_steps167086_1cli.dcd
+
+To compute the SASA of the nascent protein while on the ribosome, use the program charmm_scripts/sasa_v2.inp:
+
+> $charmm < charmm_scripts/sasa_v2.inp top=cont_syn/multidom/1cli/inpfiles/1cli_rnc_complex.top \ 
+  param=cont_syn/multidom/1cli/inpfiles/1cli_rnc_complex.prm psf=cont_syn/multidom/1cli/output/1_r100_steps167086_1cli.psf \ 
+  inpath=cont_syn/multidom/1cli/output/1_r100_steps167086_1cli.dcd outpath=analysis/1cli/asa/1_r100_steps167086_1cli_sasa.txt \ 
+  nres=100 frames=33
+
+Output will be written to analysis/1cli/asa/1_r100_steps167086_1cli_sasa.txt
+
+Sample output is provided in analysis/1cli.bck/asa/1_r100_steps167086_1cli_sasa.txt
+
+The co-translational SASA is then computed using the command
+
+> python python_scripts/cot_hydrophobic_sasa.py cntrl_files/1cli_analysis.cntrl True 1
+
+Reference values for the folded state simulations are drawn from folded_cot_hydrophobic_sasa.dat
+Sample output is provided in analysis/1cli.bck/1_cot_hydrophobic_sasa_comp.txt 
+
+Note that this program will "error" out after analysing the first DCD file that we have provided as a test
+as it looks for the next file for the continuous synthesis trajectory (1_*r101*dcd in this case)

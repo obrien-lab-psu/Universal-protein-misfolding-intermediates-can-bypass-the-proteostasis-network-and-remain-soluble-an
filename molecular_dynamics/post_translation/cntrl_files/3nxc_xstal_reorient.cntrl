@@ -1,0 +1,15 @@
+prot         = 3nxc
+charmm_exec  = /storage/home/dan182/work/software/charmm/executables/c35b5_deby_doubang_pull/charmm
+timestp      = 0.015
+fbsolu       = 0.050
+steps        = 10000000
+batht        = 310
+post_script  = charmm_scripts/post_trans_dwell_binary_reorient_v2.inp
+top          = multidom/3nxc/inpfiles/3nxc_chain_a_renum_rebuilt_mini_ca.top
+param        = multidom/3nxc/inpfiles/3nxc_chain_a_renum_rebuilt_mini_ultimate.prm
+max_res      = 198
+log_file_dir = multidom/3nxc/outfiles/
+output_dir   = multidom/3nxc/output/
+xstal        = 1
+xstal_cor    = multidom/3nxc/inpfiles/3nxc_chain_a_renum_rebuilt_mini_ca_binary.cor
+xstal_psf    = multidom/3nxc/inpfiles/3nxc_chain_a_renum_rebuilt_mini_ca.psf

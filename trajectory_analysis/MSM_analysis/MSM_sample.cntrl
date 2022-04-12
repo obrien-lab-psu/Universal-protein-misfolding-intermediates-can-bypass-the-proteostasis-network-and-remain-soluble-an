@@ -1,0 +1,14 @@
+n_traj = 50
+mutant_type_list = wild
+n_cluster = 400
+stride=1
+n_large_states = 7
+n_small_states = 2
+lag_t = 1
+sample_size = 5
+native_AA_pdb = /storage/home/yuj179/mygroup/Dan/2qcu_data/wild/setup/2qcu_chain_b_rebuilt_mini_copy.pdb
+prefix_dir = /storage/home/yuj179/mygroup/Dan/2qcu_data
+visualiz_threshold = 0.02
+if_cluster = 0
+if_visualize = 1
+if_sample = 0

@@ -1,0 +1,44 @@
+Python2 wrapper, .cntrl files, and CHARMM input files/scripts for coarse-grain protein post-
+translational dynamics
+
+Directories:
+
+charmm_scripts : CHARMM input scripts needed by termination_manager.py
+cmd_files      : 123 x 2  lists of commands, one for each protein's native-state simulations ("xstal") and
+                 one for each protein's post-translational dynamics ("post_trans") simulations (one command per trajectory)
+cntrl_files    : .cntrl files for post-translational dynamics and xstal/native-state simulations (note that
+                 some proteins have additional .cntrl files that perform dynamics with periodic centering
+                 of the molecule with label "reorient")
+multidom       : directories for 50 E. coli multi-domain proteins plus Luciferase (4g36)
+python_scripts : post_trans_manager.py and post_trans_manager_reorient.py Python2 programs
+singledom      : directories for 72 E. coli single-domain proteins
+
+To run a command, select it from one of the 123 lists of commands in cmd_files/
+
+> python python_scripts/post_trans_manager.py cntrl_files/1cli_post_trans.cntrl 1
+
+The post_trans_manager.py expects to find the final file written by termination_manager.py - for example,
+1cli trajectory 1 for post_trans_manager.py attempts to find multidom/1cli/output/1cli_r345_trans_term_1cli.cor/.psf.
+
+NOTE WELL: You will *certainly* need to change the path specified at charmm_exec in the .cntrl file
+           to direct post_trans_manager.py to the correct executable. Some of the larger coarse-grain
+           models (e.g. 4kn7) required an executable compiled with larger than standard arrays for
+           dihedral terms.
+
+These programs are, in theory, general for any coarse-grain or all-atom model, though special care
+should be taken to check behavior is as expected when using new forcefields. 
+
+The complete set of input files for 1cli trajectory 1 as well as the output files for the its final post-translational
+dynamics iteration are provided in multidom/1cli/output.bck/1_*
+
+python_scripts/post_trans_manager_reorient.py is adapted to use a slightly different output file name scheme but is 
+otherwise identical to python_scripts/post_trans_manager.py (cmd_files/* files may use either or both in sequence as 
+required by the specific protein). 
+
+Throughout this protocol, files may be written in binary or ascii format depending on the commands
+in the CHARMM files used. The following CHARMM input files can be used to easily convert between them
+
+charmm_scripts/ascii_to_binary_cor_psf.inp
+charmm_scripts/ascii_to_binary_psf.inp
+charmm_scripts/simple_binary_to_ascii_cor.inp
+charmm_scripts/simple_binary_to_ascii_psf.inp

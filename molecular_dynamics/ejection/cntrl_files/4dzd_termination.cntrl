@@ -1,0 +1,13 @@
+prot         = 4dzd
+charmm_exec  = /storage/home/dan182/work/software/charmm/executables/c35b5_deby_doubang_pull/charmm
+timestp      = 0.015
+fbsolu       = 0.050
+batht        = 310
+termi_script = charmm_scripts/rnc_term_protocol_binary_v2.inp
+top          = multidom/4dzd/inpfiles/4dzd_rnc_complex.top
+param        = multidom/4dzd/inpfiles/4dzd_rnc_complex.prm
+max_res      = 199
+ribostruc    = inpfiles/ribo_no_l22.cor
+ribopsf      = inpfiles/ribo_no_l22.psf
+log_file_dir = multidom/4dzd/outfiles/
+output_dir   = multidom/4dzd/output/

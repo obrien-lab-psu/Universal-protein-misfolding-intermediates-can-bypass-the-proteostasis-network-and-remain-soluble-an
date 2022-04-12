@@ -1,0 +1,13 @@
+prot         = 1gz0
+charmm_exec  = /storage/home/dan182/work/software/charmm/executables/c35b5_deby_doubang_pull/charmm
+timestp      = 0.015
+fbsolu       = 0.050
+batht        = 310
+termi_script = charmm_scripts/rnc_term_protocol.inp
+top          = multidom/1gz0/inpfiles/1gz0_rnc_complex.top
+param        = multidom/1gz0/inpfiles/1gz0_rnc_complex.prm
+max_res      = 243
+ribostruc    = inpfiles/ribo_no_l22.cor
+ribopsf      = inpfiles/ribo_no_l22.psf
+log_file_dir = multidom/1gz0/outfiles/
+output_dir   = multidom/1gz0/output/

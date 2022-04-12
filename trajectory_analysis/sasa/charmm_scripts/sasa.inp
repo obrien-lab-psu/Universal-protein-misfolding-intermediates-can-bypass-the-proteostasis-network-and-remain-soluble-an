@@ -1,0 +1,41 @@
+* CHARMM
+* Daniel A. Nissley, PhD
+* 02/28/2019
+
+prnlev 3
+bomlev 0
+
+IOFO EXTE
+
+! @top     -> topology file
+! @param   -> parameter file
+! @psf     -> protein structure file
+! @inpath  -> path to input DCD file
+! @outpath -> path to output file
+! @nres    -> number of atoms (residues = atoms for CG model)
+
+! load CHARMM input files
+read rtf card name        @top
+read param card flex name @param
+read psf card name        @psf
+
+! write all data for all residues for a given time point
+! onto one line of the output file
+long
+
+! open DCD file to be analyzed
+open unit 51 read unform name @inpath
+
+! open file to which data will be written
+open unit 21 write form name @outpath
+
+! run calculation for each frame in DCD file
+correl maxseries @nres maxtime 2000 maxatom @nres
+
+enter asa surf rprobe 1.8 sele segid A end resi
+
+traj firstu 51 nunit 1 sele segid A end
+
+write asa dumb time unit 21
+
+STOP

@@ -1,0 +1,71 @@
+# System requirements
+
+Operating system: Linux
+Environment: bash
+Python2: anaconda2-4.3.1 with MDAnalysis, numpy, and scipy
+CHARMM: c35b5_dhdwp (version c35b5 with Debye-Huckel electrostatics and double-well LJ potential; see Eq. 1)
+
+# Installation guide
+
+The results in the main text were generated using:
+
+anaconda2-4.3.1, can be downloaded free of charge from the anaconda archive: https://repo.anaconda.com/archive/
+MDAnalysis Python module, can be downloaded from: https://www.mdanalysis.org/MDAnalysisTutorial/installation.html
+Visual Molecular Dynamics v1.9.3, available free of charge at: https://www.ks.uiuc.edu/Research/vmd/
+CHARMM c35b5, license information can be found at: https://www.charmm.org/
+
+The easiest way to avoid dependency issues related to other pre-existing versions of python,
+create a new conda environment and install the above requirements into it alone. Information
+on the use of conda is available at: https://docs.conda.io/en/latest/
+
+Typical time to install anaconda, VMD, and the other modules is <30 min.
+
+Note well, the simulations and analysis programs described herein required 
+6,150 processors for 30-100 days per trajectory. As such, they cannot easily 
+be reproduced without access to a supercomputer. However, we are able to supply 
+our simulation input files (including CHARMM code) and sample output and analysis programs.
+
+# Demo
+
+The main results in this manuscript are derived from molecular dynamics
+simulation data generated using CHARMM. While we cannot provide CHARMM source
+code or executables or our complete trajectory files (which amount to ~10,000,000 files
+and 40 TB of data), we do provide all input files and scripts as well as sample simulation 
+output and analyses.
+
+In general, this pipeline can be described as Python2 wrappers that manage
+the CHARMM dynamics, minimization, etc. steps necessary to simulation the biogenesis
+of a protein using a coarse-grain model of the ribosome and nascent chain.
+
+The coarse-grain model we use is available on GitHub at: https://github.com/obrien-lab-psu/kb_cg_protein_model-
+This program requires a PDB file containing all heavy atoms to generate a CG model
+
+Demonstration files are provided in the molecular_dynamics/ and 
+trajectory_analysis/ subdirectories as described below in Files Provided
+
+## Files Provided
+
+All simulation input files and scripts are presented in molecular_dynamics/
+
+The atomistic PDB files used to generate coarse-grain structures of each of the 
+123 proteins we simulated can be found in
+
+molecular_dynamics/atomistic_pdbs/
+ 
+They are named according to the PDB ID of the structure upon which they are
+predominantly based (see Tables S2, S3, and S4 of Nissley et al. 2020), though for
+some this is an arbitrary decision. 
+
+The three subdirectories
+
+(1) molecular_dynamics/synthesis
+(2) molecular_dynamics/ejection 
+(3) molecular_dynamics/post_translation
+
+correspond to the three stages of simulations carried out. 
+
+The files in molecular_dynamics/atomistic_pdbs correspond to the all-atom input files used to generate coarse-grain representations. 
+
+Each of these directories contain their own README file, inputs, and 
+sample outputs. Note that the "*_manager.py" programs mentioned in each subdirectory also 
+contain extensive explanatory comments.

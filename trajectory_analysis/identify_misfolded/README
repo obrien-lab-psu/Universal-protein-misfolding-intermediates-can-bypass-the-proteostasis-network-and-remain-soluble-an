@@ -1,0 +1,78 @@
+Contains input files and Python2 programs necessary to carry out the final cross-referencing
+of protein conformations and properties to determine which trajectories are misfolded, likely to aggregate,
+likely to function, etc. 
+
+chaperones                 : contains files related to chaperone interactions
+entanglement_summary_files : contains files with entanglement information for each trajectory and protein
+mean_props_by_traj         : contains files with mean values of various metrics for each trajectory and protein
+python_scripts             : contains Python2 functions and programs to cross-reference results
+analysis                   : contains empty dumby files used to generate file names
+sample_output              : contains sample output generated as described below
+
+The program python_scripts/run_analysis.py loads the functions within python_scripts/traj_by_traj_analysis_v2.py
+and uses them to cross-reference the folding, function, aggregation, degradation, and chaperone interaction properties of
+trajectories to determine which remain soluble but non-functional.
+
+The information used to classify trajectories is available in the mean_props_by_traj/ and entanglement_summary_files/
+directories
+
+Each protein has five files in mean_props_by_traj; for 1cli we have
+
+mean_props_by_traj/1cli_cot_hydrophobic_sasa.txt  : mean value of Eq. 9 over synthesis portion of trajectory
+mean_props_by_traj/1cli_hydrophobic_sasa.txt      : mean value of Eq. 10 over various chunks of time
+mean_props_by_traj/1cli_DnaK_sasa.txt             : mean value of Eq. 11 over various chunks of time
+mean_props_by_traj/1cli_agg_sasa.txt              : mean value of Eq. 12 over various chunks of time
+mean_props_by_traj/1cli_chi_func.txt              : mean value of Eq. 13 over various chunks of time
+mean_props_by_traj/1cli_Qmode.txt                 : mean value of Q mode over various chunks of time
+
+The values in these files were produced by computing the mean over the final 100, 200, 300, 400, or 500 ns
+of each trajectory (or the first portion of each) for each parameter. The time series analysed to produce
+the DnaK, agg, cot_hydrophobic, and hydrphobic mean properties files were generated using the methods
+detailed in trajectory_analysis/sasa, Qmode analysis is described in trajectory_analysis/Q_Qmode_Qoverall,
+and the functional residue analysis is detailed in trajectory_analysis/function.
+
+The data files in entanglement_summary_files/ represents the output of Eqs. 7 for each trajectory.
+These files were create by taking the discrete probability distribution of different types of entanglement change
+for the nascent or mature 500, 400, 300, 200, & 100ns of the prost translational simulations 
+relative to the reference distribution. 
+
+code for the generation of the discrete distributions can be found here: https://github.com/obrien-lab/topology_analysis
+
+To cross-reference trajectory properties and save the results to a file named run.out use the command
+
+> python python_scripts/run_analysis.py > run.out
+
+This will generate a set of files (like those in sample_output/) summarizing which trajectories misfold, interact
+with chaperones, aggregate, degrade, are similar to the native state in terms of Q, etc. 
+
+Many of the results presented in the main text are summarized in sample_output/run.out; for example, 
+you can see that we identify a total of 1,631 misfolded trajectories and that 186 of them are predicted
+to remain soluble but misfolded.
+
+The files in sample_output/ were used to generate various plots within the manuscript:
+
+Figure 2A   : traj_by_traj_percent_misfolded_by_pdb.txt
+Figure 2B   : traj_by_traj_overall_Q_and_perc_change.txt
+Figure 2C   : see trajectory_analysis/extrapolate_tF/fit_results_v2.log
+Figure 2D   : traj_by_traj_hydrophobic_values_folded.txt, traj_by_traj_hydrophobic_values_misfolded.txt
+Figure 2E   : traj_by_traj_func_values_folded.txt, traj_by_traj_func_values_misfolded.txt (N.B., before plotting 
+              values were multiplied by -1 to match the sign convention in Eq. 13 such that values >0.0 indicate 
+              decreased structure relative to the native state reference simulations). 
+Figure 2F   : venn_diagram_input.txt
+Figure S1   : traj_by_traj_TF_values_misfolded.txt
+Figure S2   : traj_by_traj_DnaK_values_folded.txt, traj_by_traj_DnaK_values_misfolded.txt
+Figure S3   : traj_by_traj_agg_values_folded.txt, traj_by_traj_agg_values_misfolded.txt
+
+For completeness, we have also provided the raw data plotted in Figure 1 for 4G36/Luciferase:
+
+Figure 1D   : 4g36_27_d2_Qi_fF_alg2_3sig_3tol.txt
+Figure 1E   : 4g36_46_d2_Qi_fF_alg2_3sig_3tol.txt
+Figure 1F   : 4g36_27_func_sm_chi_processed.txt, 4g36_46_func_sm_chi_processed.txt
+
+The data included in Figure 4 is summarized in sample_output/escaping_trajectories.txt
+
+The data plotted in Figure 5 for the 2QCU case study is found in
+
+Figure 5B   : traj_by_traj_percent_misfolded_by_pdb.txt
+Figure 5D   : see trajectory_analysis/extrapolate_tF/fit_results_v2.log
+Figure 5E/F : see mean_props_by_traj/2qcu_*

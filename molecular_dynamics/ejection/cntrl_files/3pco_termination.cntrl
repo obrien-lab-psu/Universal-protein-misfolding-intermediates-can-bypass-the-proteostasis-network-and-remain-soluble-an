@@ -1,0 +1,13 @@
+prot         = 3pco
+charmm_exec  = /storage/home/dan182/work/software/charmm/executables/c35b5_deby_doubang_pull/charmm_multidom
+timestp      = 0.015
+fbsolu       = 0.050
+batht        = 310
+termi_script = charmm_scripts/rnc_term_protocol_binary_xxlarge.inp
+top          = multidom/3pco/inpfiles/3pco_rnc_complex.top
+param        = multidom/3pco/inpfiles/3pco_rnc_complex_mod.prm
+max_res      = 795
+ribostruc    = inpfiles/ribo_no_l22.cor
+ribopsf      = inpfiles/ribo_no_l22.psf
+log_file_dir = multidom/3pco/outfiles/
+output_dir   = multidom/3pco/output/

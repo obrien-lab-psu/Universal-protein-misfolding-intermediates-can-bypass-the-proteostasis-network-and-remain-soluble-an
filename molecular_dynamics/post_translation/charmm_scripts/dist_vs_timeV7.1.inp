@@ -1,0 +1,35 @@
+*FILENAME: rmsd-rgyr.inp
+*PURPOSE: compute rmsd vs initial structure and radius of gyration from trajectory
+*AUTHOR: Lennart Nilsson, Karolinska Institutet, October 2003
+*
+
+prnlev 3
+bomblev -1
+
+set rtf inputs/go_dye_rib_v3.top
+set para inputs/go_dye_rib_v3.prm
+
+read rtf card name @rtf
+read para card name @para
+read psf card name @psf
+
+open unit 12 write form name @outfile
+open unit 51 read unform name @infile
+
+traj firstu 51 nunit 1
+
+set inx = 1
+
+! loop to go through frame by frame and calculate the requested bead 
+! coordinates to be used in the calculation of the energy transfer rate
+
+label nextframe
+
+   traj read
+   coor copy comp
+   write coor comp dumb sele ((resid 1 .and. type A) .or. (resid @trp .and. type A)) end unit 12
+   increment inx by 1
+
+if inx .le. @frames goto nextframe
+
+STOP

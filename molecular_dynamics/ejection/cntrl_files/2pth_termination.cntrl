@@ -1,0 +1,13 @@
+prot         = 2pth
+charmm_exec  = /storage/home/dan182/work/software/charmm/executables/c35b5_deby_doubang_pull/charmm
+timestp      = 0.015
+fbsolu       = 0.050
+batht        = 310
+termi_script = charmm_scripts/rnc_term_protocol_binary_v2.inp
+top          = singledom/2pth/inpfiles/2pth_rnc_complex.top
+param        = singledom/2pth/inpfiles/2pth_rnc_complex.prm
+max_res      = 194
+ribostruc    = inpfiles/ribo_no_l22.cor
+ribopsf      = inpfiles/ribo_no_l22.psf
+log_file_dir = singledom/2pth/outfiles/
+output_dir   = singledom/2pth/output/

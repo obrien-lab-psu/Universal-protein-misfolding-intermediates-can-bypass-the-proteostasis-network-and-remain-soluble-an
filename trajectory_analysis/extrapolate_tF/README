@@ -1,0 +1,32 @@
+This directory contains a Python2 program and sample inputs used
+to extrapolate the long folding times of our 122 E. coli proteins.
+
+The python program python_scripts/extrapolate_tf_v2.py uses the input files
+of the type folding_times/1cli/*_d1_Qi_fF_alg2_3sig_3tol_pt.txt
+and folding_times/1cli/*_post_trans_frames-all_conc_G.dat, which represent
+the folding status of the protein according to Q and G, respectively (see Methods
+and Eq. 8). To do this for the two domains and one interface of 1cli, run the commands
+
+> python python_scripts/tf_from_double-exponential_fit_v2.py 1cli d1
+> python python_scripts/tf_from_double-exponential_fit_v2.py 1cli d2
+> python python_scripts/tf_from_double-exponential_fit_v2.py 1cli dom1_dom2
+
+This will create output files in folding_times/survival_prob_ts/ and
+folding_times/plots that you can view to inspect the output of the fitting.
+Sample plots and time series for 1cli are provided in sample_output/
+
+The file xstal_f2Gtot_means.out contains the mean value of the fraction of native contacts 
+with a change in entanglement (G) from the static native state across reference simulations started
+from the static native state. 
+
+G time series are calculated using code available here: https://github.com/obrien-lab/topology_analysis
+Mean values were then calcualted using numpy.
+
+The file fit_results_v2.log contains the fits used to compute the
+folding times reported in Figure 2C and Table S5. For example, the
+value for 1cli reported in Table S5 is 2.35E19 ns. This value is
+computed as the inverse of the smallest folding rate computed
+from the above analysis of 1cli domain 1, domain 2, and the 1/2 interface.
+The smallest folding timescale for 1cli is k1 = 4.259350376E-20 1/ns for domain 2
+(check 'grep 1cli fit_results_v2.log' to prove it to yourself).
+The recipricol of this value is 2.35E19 ns, the folding timescale reported in Table S5.

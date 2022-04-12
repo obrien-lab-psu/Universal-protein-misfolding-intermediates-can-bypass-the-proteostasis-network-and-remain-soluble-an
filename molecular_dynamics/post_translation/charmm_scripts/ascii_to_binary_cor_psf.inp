@@ -1,0 +1,28 @@
+* CHARMM
+* Edward P. O'Brien Jr. UMD/NIH
+* Edited by Dan Nissley 05/02/18 
+!======== BEGIN: Set parameters ===========
+
+prnlev 5
+bomlev -2 ! NECESSARY TO PASS 'RANDOM SEED' ERROR FROM DYNAMC
+
+  IOFO EXTE
+
+  ! read parameter and topology files
+  !read rtf card name @top
+  !read param card flex name @param
+
+  ! Read psf and coor files from previous nascent chain length
+  read psf card name @psf
+  read coor card name @cor
+
+  ! write out final coordinates
+  open write unit 10 file name @outcor
+  write coor file unit 10
+  close unit 10
+
+  !open write unit 10 file name @outpsf
+  !write psf file unit 10
+  !close unit 10
+
+  STOP

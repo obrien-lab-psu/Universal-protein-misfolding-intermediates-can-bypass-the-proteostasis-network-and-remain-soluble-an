@@ -1,0 +1,42 @@
+############################
+# CONTROL FILE INFORMATION #
+############################
+
+prot         = 1cli
+charmm_exec  = /storage/home/dan182/work/software/charmm/executables/c35b5_deby_doubang_pull/charmm
+timestp      = 0.015
+fbsolu       = 0.050
+batht        = 310
+termi_script = charmm_scripts/rnc_term_protocol.inp
+top          = multidom/1cli/inpfiles/1cli_rnc_complex.top
+param        = multidom/1cli/inpfiles/1cli_rnc_complex.prm
+max_res      = 345
+ribostruc    = inpfiles/ribo_no_l22.cor
+ribopsf      = inpfiles/ribo_no_l22.psf
+log_file_dir = multidom/1cli/outfiles/
+output_dir   = multidom/1cli/output/
+
+############################
+# BEGIN TERMINATION SCRIPT #
+############################
+
+Termination Command   : /storage/home/dan182/work/software/charmm/executables/c35b5_deby_doubang_pull/charmm < charmm_scripts/rnc_term_protocol.inp prot=1cli traj=1 top=multidom/1cli/inpfiles/1cli_rnc_complex.top param=multidom/1cli/inpfiles/1cli_rnc_complex.prm psf=multidom/1cli/output/1_r345_steps131680_1cli.psf cor=multidom/1cli/output/1_r345_steps131680_1cli.cor ribopsf=inpfiles/ribo_no_l22.psf ribostruc=inpfiles/ribo_no_l22.cor total=345 fbsolu=0.050 outdir=multidom/1cli/output/ rand=151076427 batht=310 timestp=0.015 >> multidom/1cli/outfiles/1_termi.out
+
+############################
+# TCL SCRIPT TO MERGE DCDS #
+############################
+
+mol load psf multidom/1cli/output/1_r345_steps131680_1cli.psf dcd multidom/1cli/output/1_r345_trans_term1_1cli.dcd
+mol addfile multidom/1cli/output/1_r345_trans_term2_1cli.dcd
+mol addfile multidom/1cli/output/1_r345_trans_term3_1cli.dcd
+mol addfile multidom/1cli/output/1_r345_trans_term4_1cli.dcd
+mol addfile multidom/1cli/output/1_r345_trans_term5_1cli.dcd
+mol addfile multidom/1cli/output/1_r345_trans_term6_1cli.dcd
+animate write dcd multidom/1cli/output/1_termi_merged_1cli.dcd
+exit
+
+VMD command           : vmd -dispdev text -e tcl_scripts/1cli_1_merge_termi_dcd.tcl
+
+Remove DCDs command   : rm multidom/1cli/output/1_r345_trans_term1_1cli.dcd multidom/1cli/output/1_r345_trans_term2_1cli.dcd multidom/1cli/output/1_r345_trans_term3_1cli.dcd multidom/1cli/output/1_r345_trans_term4_1cli.dcd multidom/1cli/output/1_r345_trans_term5_1cli.dcd multidom/1cli/output/1_r345_trans_term6_1cli.dcd
+
+NORMAL TERMINATION

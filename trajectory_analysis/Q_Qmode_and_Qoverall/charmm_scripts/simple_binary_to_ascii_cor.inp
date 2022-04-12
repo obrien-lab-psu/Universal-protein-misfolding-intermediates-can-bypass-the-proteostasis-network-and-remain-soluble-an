@@ -1,0 +1,7 @@
+* CHARMM
+read psf card name @psf
+read coor file name @cor               ! read binary coor
+open write unit 10 card name @outcor   ! write ASCII coor
+write coor card unit 10
+close unit 10
+STOP

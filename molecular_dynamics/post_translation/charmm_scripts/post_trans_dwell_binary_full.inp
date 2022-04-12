@@ -1,0 +1,103 @@
+* CHARMM
+* Edward P. O'Brien Jr. UMD/NIH
+* Edited by Dan Nissley 05/02/18 
+!======== BEGIN: Set parameters ===========
+
+prnlev 5
+bomlev 0
+
+  IOFO EXTE
+
+  ! Seed the random number generator
+  rand unif isee @rand
+
+  ! read parameter and topology files
+  read rtf card name @top
+  read param card flex name @param
+
+  ! Read psf and coor files from previous nascent chain length
+  read psf file name @psf
+  read coor file name @cor
+
+  ! Set friction forces
+  scalar fbeta set 0.050 sele segid A end
+  SCAL FBETA SHOW sele segid A end
+
+  ! speeds up the non-bonded list generation
+  nbond bycc
+  update DEBY SCRE 10.0
+  eten on
+
+  shake bond para
+
+  set var ?rand
+
+  calc randvar int(@var*100000000)
+
+  ! check to see if this is a new run or a restart
+  ! and go to the correct loop (determines whether we only
+  ! write a restart file or also need to read one in)
+  if @num .eq. 1 goto firstdyn
+
+  if @num .gt. 1 goto redyn
+
+  label firstdyn
+
+    open unit 21 write unform name @trajname
+    open unit 20 write card name @resout
+
+    ! run 10 million steps of dynamics at a time (150 ns)
+    dyna leap langevin strt nstep @steps timestep @timestp -
+          iprfrq 0 ieqfrq 0 ntrfrq 0  -
+          iunwri 20 iuncrd 21 iunvel -1 -
+          ihtfrq 0 teminc 0 nprint 10000 nsavc 5000 nsavv 0 ihbfrq 0 -
+          inbfrq -1 imgfrq 0 -
+          ilbfrq 0 -
+          rbuffer 0.0 tbath @batht tstruc @batht -
+          firstt @batht finalt @batht -
+          iasors 0 iasvel 1 iscvel 0 ichecw 0 twindh 0.0 twindl 0.0 iseed @randvar -
+          echeck 5000
+
+    close unit 21
+    close unit 20 
+
+    goto finish
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
+  label redyn
+
+    open unit 21 write unform name @trajname
+    open unit 20 write card name @resout
+    open unit 50 read card name @resin
+
+    ! center the molecule so it doesn't drift too far in the coordinate system
+    coor orie
+
+    ! run 10 million steps of dynamics, but read in restart file
+    dyna leap langevin restart nstep @steps timestep @timestp -
+          iunrea 50 -
+          iprfrq 0 ieqfrq 0 ntrfrq 0  -
+          iunwri 20 iuncrd 21 iunvel -1 -
+          ihtfrq 0 teminc 0 nprint 10000 nsavc 5000 nsavv 0 ihbfrq 0 -
+          inbfrq -1 imgfrq 0 -
+          ilbfrq 0 -
+          rbuffer 0.0 tbath @batht tstruc @batht -
+          firstt @batht finalt @batht -
+          iasors 0 iasvel 1 iscvel 0 ichecw 0 twindh 0.0 twindl 0.0 - ! do not provide value for iseed, let it be taken from
+          echeck 5000                                                 ! from the restart file!
+
+    close unit 21
+    close unit 20
+    close unit 50
+
+    goto finish
+
+  label finish
+
+    ! write out final coordinates
+    open write unit 10 file name @outcor
+    write coor file unit 10
+    close unit 10
+
+    STOP

@@ -1,0 +1,52 @@
+Analyse simulation trajectory data to compute fraction of native contacts (Q) for each domain/interface, 
+the mode of Q over a sliding window (Q_mode) and the overall fraction of native contacts
+(Q_overall). 
+
+Directories:
+
+analysis       : directory to which analysis output will be written
+charmm_scripts : directory containing CHARMM programs for binary -> ascii conversion
+cntrl_files    : contains sample .cntrl file for 1cli analysis
+cont_syn       : contains sample 1cli synthesis data
+post_trans     : contains sample 1cli post-translational dynamics data
+python_scripts : contains the python programs needed for Q, Q_mode, and Q_overall analyses
+termination    : contains sample 1cli termination data
+
+(1) To run the initial fraction of native contacts analysis, run the command
+
+> python python_scripts/traj_analysis.py cntrl_files/1cli_analysis.cntrl 1
+
+This will run initial Q analysis on domain 1 and 2 of 1cli as well as the interface. 
+Output files will be written to analysis/1cli/1_d1_Qi.out, analysis/1cli/1_d2_Qi.out,
+and analysis/1cli/1_dom1_dom2_Qi.out, respectively. Note that normally this program
+takes several hours to process all of the trajectory data for a single trajectory,
+but we have provided a small example that reduces the run time to <10 min. This example
+consists of the final synthesis DCD file, the ejection DCD file, and the first post-
+translational dynamics file.
+
+After computing the raw fraction of native contacts, we further processed the time
+series by computing the mode of Q over a 15-ns sliding window. This value within the
+15-ns sliding window is compared to the average Qmode computed over native-state
+reference trajectories (for convenience, we supply all of these reference values in 
+xstal_stats.inp) to determine if the protein is folded in a particular window.
+
+(2) To run Qmode analysis on 1cli trajectory 1, run the command
+
+> python python_scripts/alg2_mode_fraction_folded_v2.py 1cli d1 Qi 1
+
+Data will be written to analysis/1cli/1_d1_Qi_fF_alg2_3sig_3tol.txt (see program for details).
+
+(3) To compute the overall fraction of native contacts (rather than the fraction of native
+contacts for a specific structure alone) run the command
+
+> python python_scripts/overall_Q.py cont_syn/multidom/1cli/inpfiles/1cli_chain_a_rebuilt_mini_ca.cor \ 
+  cont_syn/multidom/1cli/inpfiles/1cli_chain_a_rebuilt_mini_ca.psf 345 \ 
+  cont_syn/multidom/1cli/inpfiles/1cli_chain_a_rebuilt_mini_ca.psf 345 \ 
+  cont_syn/multidom/1cli/inpfiles/1cli_sec_struc.txt post_trans/multidom/1cli/output/1_i1_post_trans_1cli.dcd \ 
+  False analysis/1cli/1_i1_post_trans_1cli_pt.txt False True
+
+By changing its command line arguments this program can be used to carry out diverse fraction of native contact analyses.
+
+Data will be written to analysis/1cli/1_i1_post_trans_1cli_pt.txt
+
+Sample output is saved in analysis/1cli.bck

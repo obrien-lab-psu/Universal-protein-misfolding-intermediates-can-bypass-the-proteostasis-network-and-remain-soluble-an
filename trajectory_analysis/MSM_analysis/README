@@ -1,0 +1,35 @@
+The programs and data in this directory correspond to the MSM results in Fig. 5. 
+
+MSM.svg          : 2D plot of states on G and Q
+MSM_sample.cntrl : cntrl file used by MSM_sample.py
+MSM_sample.py    : program that carries out analysis
+msm_data.npz     : numpy file containing output in zipped format
+sampled_traj.dcd : sample structures
+wild_G.npy       : entanglement results as numpy array
+wild_QBB.npy     : fraction of natice contacts results as numpy array
+wild_state_map_data.npz : output state map in zipped format
+
+state_struct:
+
+Each of these files corresponds to a MetaStable State. State 9 corresponds to the
+native state and was omitted from the manuscript. The VMD tcl scripts allow for
+visualization of the first representative structure and any entanglements. 
+
+state_1.pdb
+state_2.pdb
+state_3.pdb
+state_4.pdb
+state_5.pdb
+state_6.pdb
+state_7.pdb
+state_8.pdb
+state_9.pdb
+vmd_1.tcl
+vmd_2.tcl
+vmd_3.tcl
+vmd_4.tcl
+vmd_5.tcl
+vmd_6.tcl
+vmd_7.tcl
+vmd_8.tcl
+vmd_9.tcl

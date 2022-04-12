@@ -1,0 +1,13 @@
+prot         = 1qf6
+charmm_exec  = /storage/home/dan182/work/software/charmm/executables/c35b5_deby_doubang_pull/charmm_multidom
+timestp      = 0.015
+fbsolu       = 0.050
+batht        = 310
+termi_script = charmm_scripts/rnc_term_protocol_binary_xxlarge.inp
+top          = multidom/1qf6/inpfiles/1qf6_rnc_complex.top
+param        = multidom/1qf6/inpfiles/1qf6_rnc_complex_mod.prm
+max_res      = 642
+ribostruc    = inpfiles/ribo_no_l22.cor
+ribopsf      = inpfiles/ribo_no_l22.psf
+log_file_dir = multidom/1qf6/outfiles/
+output_dir   = multidom/1qf6/output/

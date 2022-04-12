@@ -1,0 +1,12 @@
+This directory contains input files and a Python3 program to carry out analysis of
+the solvent accessible surface area of specific regions within a protein. (Eq. 16)
+
+First, use get_mean_xstal_SASA_by_peptide.py to compute reference values from the native state
+simulations. All of the input data files are too large to supply, but we have provided sample
+data in SASA/ for a reference trajectory (1_i1_xstal_2qcu_sasa.txt.gz) and a post-translational
+dynamics trajectory (1_i45_post_trans_2qcu_sasa.txt.gz). 
+
+Next, use get_mean_SASA_by_state.py to generate the results from Eq. 16 for each peptide and state of
+interest. 
+
+Note that msm_data.npz is obtained by running the code available at trajectory_analysis/MSM_analysis/

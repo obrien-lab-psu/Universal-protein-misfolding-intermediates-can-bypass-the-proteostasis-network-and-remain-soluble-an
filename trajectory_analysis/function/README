@@ -1,0 +1,34 @@
+This directory contains input files and a Python2 program to carry out
+analysis of the structure of residues implicated in function (Eqs. 13-15). 
+
+analysis         : contains sample output data in 1cli.bck
+cntrl_files      : contains a sample .cntrl file for 1cli 
+database_results : contains Database_122_16_July.txt, a database of functional residues for our 122 E. coli proteins
+post_trans       : contains sample input data for 1cli
+python_scripts   : contains traj_func.py
+
+The file database_results/Database_122_16_July.txt contains the database
+whose terms are described in Table S9. 
+
+To begin computing the relative structural overlap of functional residues, run 
+the command
+
+> python python_scripts/traj_func.py cntrl_files/1cli_analysis.cntrl 1 both
+
+This program reads in the functional residue definitions in the database file
+and computes their structural overlap relative to a reference conformation (see
+Eqs. 14 and 15). The output of the program is analysis/1cli/1_func_both_chi.txt
+
+To further process this time series using Eq. 13, run the command
+
+> python python_scripts/process_func_trajs.py 1cli both 1
+
+The output of this command will be written to analysis/1cli/1_func_both_chi_processed.txt
+It contains the processed data from the previous file. Note that three analysis modes are
+available: (1) intf (interface), (2) sm (small molecule), and (3) both. These refer to the
+sets of residues included in the analysis (see Methods and database file). All values in the
+manuscript refer to calculations completed using the 'both' mode of analysis.  
+
+The files xstal_func_both.dat, xstal_func_intf.dat, and xstal_func_sm.dat
+contain mean values over native-state simulations (i.e., the denominator in
+Eq. 13) and are used by process_func_trajs.py when generating *_processed.txt files

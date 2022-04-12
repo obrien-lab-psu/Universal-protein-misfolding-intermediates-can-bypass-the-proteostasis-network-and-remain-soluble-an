@@ -1,0 +1,151 @@
+* CHARMM
+* Edward P. O'Brien Jr. UMD/NIH
+* Edited by Dan Nissley 03/21/18 
+!======== BEGIN: Set parameters ===========
+
+prnlev 3
+bomlev 0
+
+  ! Seed the random number generator
+  rand unif isee @rand
+
+  ! read parameter and topology files
+  read rtf card name @top
+  read param card flex name @param
+
+  ! Read psf and coor files from previous nascent chain length
+  read psf file name @psf
+  read coor file name @cor
+
+  ! Set friction forces
+  scalar fbeta set @fbsolu sele segid A .or. segid B end
+  SCAL FBETA SHOW sele segid A .or. segid B end
+
+  ! speeds up the non-bonded list generation
+  nbond bycc
+  update DEBY SCRE 10.0
+  eten on
+
+  ! turn off ALL interaction between RIBO sites
+  ! retain RIBO-A, RIBO-B, A-B, A-A, and B-B interactions
+  block 3
+  call 1 sele segid RIBO end
+  call 2 sele segid A end
+  call 3 sele segid B end
+  coeff 1 1 0.0
+  coeff 2 2 1.0
+  coeff 3 3 1.0
+  coeff 1 2 1.0
+  coeff 1 3 1.0
+  coeff 2 3 1.0
+  end
+
+  ! place planar restraint so the nascent chain doesn't go behind the PTC
+  MMFP
+  GEO plane xref 1.0 yref 0.0 zref 0.0 xdir 1.0 -
+  exponential force 50 droff 2.0 p1 0.05 -
+  sele segid A end
+  END
+
+  ! place planar restraint so nascent chain can't touch bottom of ribosome surface
+  calc tval @total - 49 ! ignore first 50 residues for this restraint
+  MMFP
+  GEO plane xref 58.0 yref 0.0 zref 0.0 xdir 1.0 -
+  exponential force 50 droff 2.0 p1 0.05 -
+  sele segid A .and. (.not. resid @tval:@total) .and. (prop x .gt. 60) end ! ignore first 50 residues for this restraint
+  END
+
+  ! apply restraint to C-terminal bead
+  MMFP
+  GEO sphere harm -
+  xref 6.0 yref 0 zref 0 -
+  force 50 droff 0.0 select resid @total .and. segid A .and. type A end
+  END
+
+  ! place planar restraints so nascent chain is directed into tunnel when it is short
+  if @total .le. 15 then
+
+   !add a series of five planar restraints to direct the nascent chain
+   MMFP              
+   GEO plane xref 0.0 yref 20.0 zref 0.0 ydir 1.0 -
+   exponential force 50 droff 2.0 p1 0.05 -
+   sele segid A end
+   END
+
+   MMFP
+   GEO plane xref 0.0 yref -10.0 zref 0.0 ydir -1.0 -
+   exponential force 50 droff 2.0 p1 0.05 -           
+   sele segid A end
+   END
+
+   MMFP
+   GEO plane xref 0.0 yref 0.0 zref 20.0 zdir 1.0 -
+   exponential force 50 droff 2.0 p1 0.05 -
+   sele segid A end    
+   END
+
+   MMFP
+   GEO plane xref 0.0 yref 0.0 zref -12.0 zdir -1.0 -
+   exponential force 50 droff 2.0 p1 0.05 -
+   sele segid A end                 
+   END
+
+  endif
+
+  ! select interaction sites around the peptidyl transferase center
+  define s1 sele segid RIBO .and. (prop x .gt. 3 .and. point 6 0 0 CUT 12) end
+
+  ! select all interaction sites not in the partial sphere around the PTC
+  define s2 sele segid RIBO .and. (.not. (s1)) end
+
+  ! select portion of segid B to be held fixed
+  define s3 sele segid B .and. (.not. resid 42:59) end
+
+  cons harm force 0.5 sele (s1) end
+  cons fix sele (s2) .or. (s3) end
+
+  shake bond para
+
+  set var ?rand
+
+  ! write time-series of coordinates
+  open unit 21 write unform name @outdir@traj_r@total_steps@steps_@prot.dcd
+
+  calc randvar int(@var*100000000)
+
+  dyna leap langevin strt nstep @steps timestep @timestp -
+      iprfrq 0 ieqfrq 0 ntrfrq 0  -
+      iunwri -1 iuncrd 21 iunvel -1 -
+      ihtfrq 0 teminc 0 nprint 10000 nsavc 5000 nsavv 0 ihbfrq 0 -
+      inbfrq -1 imgfrq 0 -
+      ilbfrq 0 - ! and step frequency for writing restart file
+      rbuffer 0.0 tbath @batht tstruc @batht -
+      firstt @batht finalt @batht -
+      iasors 0 iasvel 1 iscvel 0 ichecw 0 twindh 0.0 twindl 0.0 iseed @randvar -
+      echeck 5000
+
+  ! SAVE THE FULL SYSTEM COORDINATE AND PROTEIN STRUCTURE FILES
+  open write unit 10 file name @outdir@traj_r@total_steps@steps_@prot.psf
+  write psf file unit 10
+  close unit 10
+
+  open write unit 10 file name @outdir@traj_r@total_steps@steps_@prot.cor
+  write coor file unit 10
+  * traj= @traj NC length= @total steps= @steps
+  *
+  close unit 10
+  close unit 21
+
+  ! DELETE EVERYTHING EXCEPT L22 PROTEIN IN SEGID B
+  dele atom sele segid A .or. segid RIBO end
+
+  !! SAVE THE .PSF/.COR FOR SEGID B
+  open write unit 10 card name @outdir@traj_l22_struc.psf
+  write psf card unit 10
+  close unit 10
+
+  open write unit 10 card name @outdir@traj_l22_struc.cor
+  write coor card unit 10
+  close unit 10
+
+STOP

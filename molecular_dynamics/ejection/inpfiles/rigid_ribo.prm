@@ -1,0 +1,67 @@
+* 
+*
+
+ATOM
+MASS 1   P        95.000000
+MASS 2   R        92.000000
+MASS 3   BR       64.000000
+MASS 4   SG       57.000000
+MASS 5   SA       71.000000
+MASS 6   SV       99.000000
+MASS 7   SL       113.000000
+MASS 8   SI       113.000000
+MASS 9   SM       131.000000
+MASS 10  SF       147.000000
+MASS 11  SP       114.000000
+MASS 12  SS       87.000000
+MASS 13  ST       101.000000
+MASS 14  SC       114.000000
+MASS 15  SN       114.000000
+MASS 16  SQ       128.000000
+MASS 17  SY       163.000000
+MASS 18  SW       186.000000
+MASS 19  SD       114.000000
+MASS 20  SE       128.000000
+MASS 21  SH       114.000000
+MASS 22  SK       128.000000
+MASS 23  SR       114.000000
+
+BOND
+
+ANGLE
+
+DIHEDRAL
+
+IMPHI
+
+NONBONDED NBXMOD 3 ATOM CDIEL SWITCH VATOM VDISTANCE VSWITCH -
+CUTNB 37 CTOFNB 20 CTONNB 18 EPS 78.5 WMIN 1.5 E14FAC 1.0
+!atom           e_min   r_min/2
+P        0.0  -0.000132    4.2
+R        0.0  -0.000132    4.2
+BR       0.0  -0.000132    4.2
+SG       0.0  -0.000132    3.358232
+SA       0.0  -0.000132    3.753086
+SV       0.0  -0.000132    4.359399
+SL       0.0  -0.000132    4.607911
+SI       0.0  -0.000132    4.607911
+SM       0.0  -0.000132    4.607911
+SF       0.0  -0.000132    4.740325
+SP       0.0  -0.000132    4.141056
+SS       0.0  -0.000132    3.861931
+ST       0.0  -0.000132    4.186565
+SC       0.0  -0.000132    4.078775
+SN       0.0  -0.000132    4.231107
+SQ       0.0  -0.000132    4.480555
+SY       0.0  -0.000132    4.809537
+SW       0.0  -0.000132    5.047691
+SD       0.0  -0.000132    4.156336
+SE       0.0  -0.000132    4.414068
+SH       0.0  -0.000132    4.532358
+SK       0.0  -0.000132    4.740325
+SR       0.0  -0.000132    4.887845
+
+NBFIX
+! b-b due to Hbonding plus native side-chain interactions plus backbone-sidechain interactions, from PDB ../all-atom_pdbs/l112_1t43.pdb
+
+END

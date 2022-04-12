@@ -1,0 +1,1 @@
+# pdbid	traj	first100	first200	first300	first400	first500	last100	last200	last300	last400	last500

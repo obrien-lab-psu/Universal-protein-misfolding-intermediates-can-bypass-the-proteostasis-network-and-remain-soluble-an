@@ -1,0 +1,58 @@
+* CHARMM
+* can do: min, heat, equil, production, first-passage-time analysis
+* Daniel A. Nissley, Penn State
+
+!======== BEGIN: Set parameters ===========
+prnlev 9
+set bmlev 0
+bomlev 0
+
+set timestp 0.015
+set fbsolu 0.050
+
+set out 20
+
+! read parameter, topology, protein structure, and coordinate files (in that order)
+read rtf card name inpfiles/2qvr_rnc_complex.top
+read param card flex name inpfiles/2qvr_rnc_complex.prm
+read psf card name inpfiles/1_r57_ribostruc_2qvr.psf
+read coor card name inpfiles/1_r57_ribostruc_2qvr.cor
+
+define s5 sele segid RIBO .and. resid 13418:13519 show end
+
+dele atom sele (s5) end
+
+COOR SURF ACCE ACCU 0 RPROBE 1.8 SELE segid RIBO end
+SCALAR WMAIN AVER BYRES
+
+DEFI set1 SELE (PROP WMAIN .GT. 0) .and. prop x .gt. 60 end
+!DEFI set3 SELE (prop x .gt. 60 ) end
+!DEFI set1 SELE (PROP WMAIN .GT. @arcut) show end
+!DEFI set2 SELE (set1 .around. @thick) end
+
+!set2 is the surface residues
+
+! select interaction sites within certain distance from nascent chain and with x coor. > 0
+define s1 sele segid A .around. 30 .and. prop x .ge. 0 .and. props x .lt. 30 end
+define s2 sele segid A .around. 30 .and. prop x .ge. 30 .and. props x .lt. 50 end
+define s3 sele segid A .around. 35 .and. prop x .ge. 50 .and. props x .lt. 70 end
+define s4 sele segid A .around. 30 .and. prop x .ge. 70 .and. props x .lt. 100 end
+
+
+! select RIBO interaction sites 
+!                    delete everyting that isn't tunnel or surface
+dele atom sele .not. ((s1) .or. (s2) .or. (s3) .or. (s4) .or. set1) end
+
+! delete the nascent chain
+dele atom sele segid A end
+
+! write crd file    
+open write unit 10 card name ribo_no_l22.cor
+write coor card unit 10
+close unit 10
+
+open write unit 10 card name ribo_no_l22.psf
+write psf card name unit 10
+close unit 10
+
+STOP

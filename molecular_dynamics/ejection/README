@@ -1,0 +1,43 @@
+Python2 wrapper, .cntrl files, and CHARMM input files/scripts for simulation of 
+coarse-grain protein ejection from the ribosome after synthesis
+
+Directories:
+
+charmm_scripts : CHARMM input scripts needed by termination_manager.py
+cmd_files      : 123 lists of commands, one for each protein (one command per trajectory)
+cntrl_files    : 123 .cntrl files, one for each protein
+inpfiles       : global input files for termination_manager.py
+multidom       : directories for 50 E. coli multi-domain proteins plus Luciferase (4g36)
+python_scripts : termination_manager.py Python2 program
+singledom      : directories for 72 E. coli single-domain proteins
+tcl_scripts    : contains the Tool Control Language program passed to VMD to merge DCD files
+
+To run an ejection command, select it from one of the 123 lists of commands in cmd_files/
+
+> python python_scripts/termination_manager.py cntrl_files/1cli_termination.cntrl 1
+
+Submitting one of these commands will call termination_manager.py and initiate the ejection
+of a coarse-grain model from the ribosome. The termination_manager.py program will attempt
+to use Visual Molecular Dynamics to bundle DCD trajectory files for convenience. To enable
+this behavior, you must update the path to your vmd executable at line 375 of termination_manager.py
+
+The termination_manager.py expects to find the final file written by cont_syn_manager.py - for example,
+1cli trajectory 1 for termination_manager.py attempts to find multidom/1cli/output/1_r345_steps131680_1cli.cor/.psf 
+to use as the starting structure. The final structure of the protein after it has been ejected from the exit
+tunnel is stored as multidom/1cli/output/1cli_r345_trans_term_1cli.cor/.psf.
+
+NOTE WELL: You will *certainly* need to change the path specified at charmm_exec in the .cntrl file
+           to direct termination_manager.py to the correct executable. Some of the larger coarse-grain
+           models (e.g. 4kn7) required an executable compiled with larger than standard arrays for
+           dihedral terms.
+
+These programs are, in theory, general for any coarse-grain or all-atom model, though special care
+should be taken to check behavior is as expected when using new forcefields. 
+
+Sample outfiles written by both termination_manager.py (1_termi.log) and CHARMM (1_termi.out)
+are provided for 1cli trajectory 1 in multidom/1cli/outfiles/
+
+A Tool Control Language program is automatically generated and written to tcl_scripts/1cli_1_merge_termi_dcd.tcl
+that uses VMD to merge DCD files into a single file for convenience
+
+The complete set of output and input files for 1cli trajectory 1 is provided in multidom/1cli/output.bck/1_*

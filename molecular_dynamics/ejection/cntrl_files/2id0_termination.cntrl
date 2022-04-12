@@ -1,0 +1,13 @@
+prot         = 2id0
+charmm_exec  = /storage/home/dan182/work/software/charmm/executables/c35b5_deby_doubang_pull/charmm_multidom
+timestp      = 0.015
+fbsolu       = 0.050
+batht        = 310
+termi_script = charmm_scripts/rnc_term_protocol_binary_xxlarge.inp
+top          = multidom/2id0/inpfiles/2id0_rnc_complex.top
+param        = multidom/2id0/inpfiles/2id0_rnc_complex_mod.prm
+max_res      = 644
+ribostruc    = inpfiles/ribo_no_l22.cor
+ribopsf      = inpfiles/ribo_no_l22.psf
+log_file_dir = multidom/2id0/outfiles/
+output_dir   = multidom/2id0/output/

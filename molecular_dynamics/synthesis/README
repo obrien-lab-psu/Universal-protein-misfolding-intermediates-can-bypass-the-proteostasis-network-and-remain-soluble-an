@@ -1,0 +1,33 @@
+Python2 wrapper, .cntrl files, and CHARMM input files/scripts for coarse-grain protein synthesis
+
+Directories:
+
+charmm_scripts : CHARMM input scripts needed by cont_syn_manager.py
+cmd_files      : 123 lists of commands, one for each protein (one command per trajectory)
+cntrl_files    : 123 .cntrl files, one for each protein
+inpfiles       : global input files for cont_syn_manager.py (e.g., ribosome structure)
+multidom       : directories for 50 E. coli multi-domain proteins plus Luciferase (4g36)
+python_scripts : cont_syn_manager.py Python2 program
+singledom      : directories for 72 E. coli single-domain proteins
+
+To run a synthesis command, select it from one of the 123 lists of commands in cmd_files/
+
+> python python_scripts/cont_syn_manager.py cntrl_files/1cli.cntrl 1
+
+Submitting one of these commands will call cont_syn_manager.py and initiate the synthesis
+of a coarse-grain model from the initial residue indicated in the .cntrl file. The many 
+input variables to cont_syn_manager.py are described in detail in cont_syn_manager.py's comments.
+
+NOTE WELL: You will *certainly* need to change the path specified as charmm_exec in the .cntrl file
+           to direct cont_syn_manager.py to the correct executable. Some of the larger coarse-grain
+           models (e.g. 4kn7) required an executable compiled with larger than standard arrays for
+           dihedral terms.
+
+These programs are, in theory, general for any coarse-grain or all-atom model, though special care
+should be taken to check behavior is as expected when using new forcefields. 
+
+Sample outfiles written by both cont_syn_manager.py (1_synth.log) and CHARMM (1_dyna.out, 1_mini.out)
+are provided for 1cli trajectory 1 in multidom/1cli/outfiles/
+
+A sample trajectory files for 1cli trajectory 1 nascent chain length 100 are provided in 
+multidom/1cli/output.bck/

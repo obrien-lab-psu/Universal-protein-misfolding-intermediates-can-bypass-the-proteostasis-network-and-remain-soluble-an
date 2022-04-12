@@ -1,0 +1,13 @@
+prot         = 2wiu
+charmm_exec  = /storage/home/dan182/work/software/charmm/executables/c35b5_deby_doubang_pull/charmm
+timestp      = 0.015
+fbsolu       = 0.050
+batht        = 310
+termi_script = charmm_scripts/rnc_term_protocol_binary.inp
+top          = multidom/2wiu/inpfiles/2wiu_rnc_complex.top
+param        = multidom/2wiu/inpfiles/2wiu_rnc_complex.prm
+max_res      = 440
+ribostruc    = inpfiles/ribo_no_l22.cor
+ribopsf      = inpfiles/ribo_no_l22.psf
+log_file_dir = multidom/2wiu/outfiles/
+output_dir   = multidom/2wiu/output/

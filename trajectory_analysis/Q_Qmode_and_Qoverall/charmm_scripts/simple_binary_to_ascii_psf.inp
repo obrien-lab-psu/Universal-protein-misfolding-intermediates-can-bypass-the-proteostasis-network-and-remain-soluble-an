@@ -1,0 +1,6 @@
+* CHARMM
+read psf file name @psf               ! read binary PSF
+open write unit 10 card name @outpsf  ! write ASCII PSF
+write psf card unit 10
+close unit 10
+STOP
