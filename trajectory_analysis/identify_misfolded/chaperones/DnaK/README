@@ -3,7 +3,10 @@ Van Durme J, Maurer-Stroh S, Gallardo R, Wilkinson H, Rousseau F, Schymkowitz J.
 Accurate prediction of DnaK-peptide binding via homology modelling and experimental data.
 PLoS Comput Biol. 2009 Aug;5(8):e1000475.
 
-The file Bukau_both_lists.dat contains all proteins from the Bukau Lab's selective ribosome profiling experiments
-which were found to bind DnaK. I cross-referenced this list with the gene names of my 122 proteins and found that
-73 of them are DnaK clients according to the Bukau Lab data. These proteins and their gene names are listed in 
+The file "DnaK_clients.dat" is the list of genes taken from the supplementary information of
+"DnaK functions as a central hub in the E. coli chaperone network" by Calloni, ..., Hartl 2012
+Cell Reports. 
+
+The gene names in this file were cross-referenced with the gene names in myproteins.dat to 
+determine the set of our proteins that are DnaK clients. The results are stored in
 myproteins_that_are_DnaK_clients.txt

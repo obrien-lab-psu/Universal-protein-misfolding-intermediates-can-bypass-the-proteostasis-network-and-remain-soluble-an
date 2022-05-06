@@ -423,14 +423,6 @@ def add_DnaK_info(trajectories, time_cutoff_type, dnak_threshold=10.0):
                                 else:
                                         dnak[pdb+':'+traj] = True # small deviation, likely avoids DnaK binding
 
-        # make corrections for the three proteins {2jrx, 2v81, 2kfw} that have no predicted DnaK binding sites per Limbo
-        # 2jrx and 2kfw are on the Bukau client list while 2v81 is not.
-        # thus, assume 2v81 does NOT interact with DnaK but 2jrx and 2kfw do interact
-        for traj in range (1, 50+1):
-                dnak['2jrx:'+str(traj)] = False
-                dnak['2kfw:'+str(traj)] = False
-                dnak['2v81:'+str(traj)] = True
-
         # update trajectory class object list
         for traj in trajectories:
                 traj.addDnaK(dnak[traj.pdb+':'+traj.traj])

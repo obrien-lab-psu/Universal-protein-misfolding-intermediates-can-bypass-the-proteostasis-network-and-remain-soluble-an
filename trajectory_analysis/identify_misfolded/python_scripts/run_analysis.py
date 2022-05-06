@@ -226,6 +226,17 @@ print count, 'trajectories are misfolded and expected to avoid all proteostasis 
 print 'These trajectories represent', len(unique_pdbs), 'unique proteins:'
 print crossref.format_for_tables(unique_pdbs)
 
+### write data file used to generate Figure 4
+index = 1
+ofile = open('escaping_trajectories.txt', 'w')
+for traj in trajectories:
+        if traj.pdb == '4g36':
+                continue
+        if traj.misfolded and traj.TF and traj.DnaK and traj.GroEL and traj.agg and traj.deg and traj.func:
+                ofile.write(str(index)+' '+str(traj.traj)+' '+ traj.pdb +' '+ str(traj.G_mode)+'\n')
+                index += 1
+ofile.close()
+
 ### DONE
 print
 print 'EXECUTION TIME:', datetime.now()-start
